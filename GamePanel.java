@@ -313,7 +313,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     public void keyPressed(KeyEvent e) { // checks player input
         if (e.getKeyCode() == KeyEvent.VK_LEFT)  player.movingLeft  = true;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) player.movingRight = true;
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && gameState.equals("playing")) {
+        if (e.getKeyCode() == KeyEvent.VK_UP && gameState.equals("playing")) {
             bullets.add(new Bullet(player.x + 18, player.y, -8));
         }
         if (e.getKeyCode() == KeyEvent.VK_R && !gameState.equals("playing")) {

@@ -169,10 +169,12 @@ public class StartPage extends JDialog {
         JPanel outerPanel = new JPanel();
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         outerPanel.setBackground(Color.BLACK);
-        outerPanel.add(titlePanel);
+        outerPanel.add(Box.createVerticalGlue());
         outerPanel.add(titleLabel);
+        outerPanel.add(Box.createVerticalStrut(6));
         outerPanel.add(subLabel);
         outerPanel.add(centerPanel);
+        outerPanel.add(Box.createVerticalGlue());
         outerPanel.add(bottomPanel);
  
         add(outerPanel);
