@@ -138,6 +138,7 @@ public class LoginPage extends JDialog {
                     if (fileOut != null) {
                         fileOut.println(user);
                         fileOut.println(pass);
+                        fileOut.println(0);
                         showRetroDialog(showing, "ACCOUNT CREATED!", accent);
                         usernameR.setText(""); passwordR.setText("");
                         cl.show(showing, "login");

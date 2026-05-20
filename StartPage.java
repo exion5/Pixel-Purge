@@ -143,7 +143,7 @@ public class StartPage extends JDialog {
         centerPanel.add(quitBtn);
  
         // Bottom credits
-        JLabel credits = new JLabel("© 2025  PIXEL PURGE STUDIOS", SwingConstants.CENTER);
+        JLabel credits = new JLabel("ETHAN XIONG - ICS4U Game Project", SwingConstants.CENTER);
         credits.setFont(new Font("Monospaced", Font.PLAIN, 9));
         credits.setForeground(new Color(80, 80, 80));
  
@@ -172,10 +172,12 @@ public class StartPage extends JDialog {
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         outerPanel.setBackground(Color.BLACK);
         outerPanel.setPreferredSize(new Dimension(580, 510));
-        outerPanel.add(Box.createVerticalStrut(100));
+        outerPanel.add(Box.createVerticalStrut(80));
         outerPanel.add(titleLabel);
         outerPanel.add(Box.createVerticalStrut(6));
         outerPanel.add(subLabel);
+        outerPanel.add(Box.createVerticalStrut(20));
+        outerPanel.add(highScore);
         outerPanel.add(centerPanel);
         outerPanel.add(Box.createVerticalGlue());
         outerPanel.add(bottomPanel);
