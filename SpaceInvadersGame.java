@@ -1,7 +1,7 @@
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 
-public class SpaceInvadersGame {
+public class PixelPurge {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginPage lp = new LoginPage(null);
