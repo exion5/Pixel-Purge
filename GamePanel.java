@@ -358,7 +358,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             bullets.add(new Bullet(player.x + 18, player.y, -8));
         } else if (menuBtnBounds != null && menuBtnBounds.contains(e.getPoint())) {
             SwingUtilities.getWindowAncestor(this).dispose();
-            new StartPage(null).setVisible(true);
+            PixelPurge.launchStart();
         }
     }
  
