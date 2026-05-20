@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
  
@@ -341,27 +342,33 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     }
  
     void saveHighScore(){
-        ArrayList<String> user = new ArrayList<>();
-        try (Scanner scanner = prompt.getInputScanner()) { // checks scanner
-            while (scanner.hasNextLine()) {
-                user.add(scanner.nextLine());
-            }
-        }
-        int highScore = 0;
-        if (user.size() >= 3) {
-            try {
-                highScore = Integer.parseInt(user.get(2).trim()); // gets every 3rd line
-            } catch (NumberFormatException e) {
-                highScore = 0;
-            }
-        }
-        if (score > highScore){
-            user.set(2, String.valueOf(score));
-            try (PrintWriter a = prompt.getPrintWriter()) {
-                for (String s : user) {
-                    a.println(s);
+        try{
+            ArrayList<String> user = new ArrayList<>();
+            try (Scanner scanner = prompt.getInputScanner()) { // checks scanner
+                while (scanner.hasNextLine()) {
+                    user.add(scanner.nextLine());
                 }
             }
+            int highScore = 0;
+            if (user.size() >= 3) {
+                try {
+                    highScore = Integer.parseInt(user.get(2).trim()); // gets every 3rd line
+                } catch (NumberFormatException e) {
+                    highScore = 0;
+                }
+            }
+            if (score > highScore){
+                user.set(2, String.valueOf(score));
+                if (user.size() >= 3) {
+                    try (PrintWriter s = new PrintWriter(new FileWriter("Registration.txt", false))) {
+                        for (String a : user) {
+                            s.println(a);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
     
@@ -379,6 +386,46 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         buildShields();
         gameState = "playing";
         timer.start();
+    }
+
+    void exitButton(){
+        removeAll();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    
+        add(Box.createVerticalGlue());
+        
+        JButton exit = new JButton("BACK TO MENU") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(new Color(255, 80, 80));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRect(1, 1, getWidth()-3, getHeight()-3);
+                g2.setColor(Color.WHITE);
+                g2.setFont(getFont());
+                FontMetrics fm = g2.getFontMetrics();
+                g2.drawString(getText(), (getWidth()-fm.stringWidth(getText()))/2,
+                    (getHeight()+fm.getAscent()-fm.getDescent())/2);
+            }
+        };
+        exit.setFont(new Font("Monospaced", Font.BOLD, 13));
+        exit.setPreferredSize(new Dimension(260, 44));
+        exit.setMaximumSize(new Dimension(260, 44));
+        exit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exit.setFocusPainted(false);
+        exit.setBorderPainted(false);
+        exit.setContentAreaFilled(false);
+        exit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        exit.addActionListener(e -> {
+            SwingUtilities.getWindowAncestor(this).dispose();
+            new StartPage(null).setVisible(true);
+        });
+        
+        add(exit);
+        add(Box.createVerticalGlue());
+        revalidate();
+        repaint();
     }
  
     @Override public void mousePressed(MouseEvent e)  {}
