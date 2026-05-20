@@ -19,6 +19,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     int lives = 3;
     int level = 1;
     Rectangle menuBtnBounds = null;
+    String currentUser = "";
 
     String gameState = "playing"; // playing, gameover, win
  
@@ -358,7 +359,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             bullets.add(new Bullet(player.x + 18, player.y, -8));
         } else if (menuBtnBounds != null && menuBtnBounds.contains(e.getPoint())) {
             SwingUtilities.getWindowAncestor(this).dispose();
-            PixelPurge.launchStart();
+            PixelPurge.launchStart(currentUser);
         }
     }
  
@@ -370,22 +371,19 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                     user.add(scanner.nextLine());
                 }
             }
-            int highScore = 0;
-            if (user.size() >= 3) {
-                try {
-                    highScore = Integer.parseInt(user.get(2).trim()); // gets every 3rd line
-                } catch (NumberFormatException e) {
-                    highScore = 0;
+            for (int i = 0; i + 2 < user.size(); i += 3) {
+                if (user.get(i).trim().equals(currentUser)) {
+                    int highScore = 0;
+                    try { highScore = Integer.parseInt(user.get(i + 2).trim()); } catch (NumberFormatException ex) {}
+                    if (score > highScore) {
+                        user.set(i + 2, String.valueOf(score));
+                    }
+                    break;
                 }
             }
-            if (score > highScore){
-                user.set(2, String.valueOf(score));
-                if (user.size() >= 3) {
-                    try (PrintWriter s = new PrintWriter(new FileWriter("Registration.txt", false))) {
-                        for (String a : user) {
-                            s.println(a);
-                        }
-                    }
+            try (PrintWriter s = new PrintWriter(new FileWriter("Registration.txt", false))) {
+                for (String a : user) {
+                    s.println(a);
                 }
             }
         } catch (Exception e){

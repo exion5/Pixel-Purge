@@ -6,6 +6,7 @@ import java.util.Scanner;
  
 public class LoginPage extends JDialog {
     private boolean loggedIn = false;
+    private String user = "";
  
     public LoginPage(Frame owner) {
         super(owner, "Pixel Purge - Login", true);
@@ -111,6 +112,7 @@ public class LoginPage extends JDialog {
                         if (username.getText().equals(userS) &&
                             new String(password.getPassword()).equals(passS)) {
                             loggedIn = true;
+                            user = username.getText();
                             username.setText("");
                             password.setText("");
                             setVisible(false);
@@ -320,5 +322,9 @@ public class LoginPage extends JDialog {
  
     public boolean getLoggedIn() {
         return loggedIn;
+    }
+
+    public String getUser() {
+        return user;
     }
 }

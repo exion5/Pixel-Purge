@@ -6,7 +6,7 @@ import java.awt.geom.*;
 public class StartPage extends JDialog {
     private boolean start = false;
  
-    public StartPage(Frame owner) {
+    public StartPage(Frame owner, String username) {
         super(owner, "Pixel Purge", true);
         setModal(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
