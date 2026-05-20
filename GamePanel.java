@@ -18,6 +18,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     int score = 0;
     int lives = 3;
     int level = 1;
+    Rectangle menuBtnBounds = null;
 
     String gameState = "playing"; // playing, gameover, win
  
@@ -313,6 +314,22 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             g2.setColor(new Color(200, 200, 200));
             g2.drawString(sub2, cx + (cw - fm.stringWidth(sub2)) / 2, cy + 155);
         }
+
+        int bw = 220, bh = 40; // exit button
+        int bx = cx + (cw - bw) / 2, by = cy + 200;
+        g2.setColor(Color.BLACK);
+        g2.fillRect(bx, by, bw, bh);
+        g2.setColor(new Color(255, 80, 80));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRect(bx, by, bw, bh);
+        g2.setColor(Color.WHITE);
+        g2.setFont(retroSmall);
+        fm = g2.getFontMetrics();
+        String btnText = "BACK TO MENU";
+        g2.drawString(btnText, bx + (bw - fm.stringWidth(btnText)) / 2, by + (bh + fm.getAscent() - fm.getDescent()) / 2);
+
+        // Store button bounds for click detection
+        menuBtnBounds = new Rectangle(bx, by, bw, bh);
     }
 
     @Override
@@ -337,8 +354,12 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
  
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (gameState.equals("playing"))
+        if (gameState.equals("playing")) {
             bullets.add(new Bullet(player.x + 18, player.y, -8));
+        } else if (menuBtnBounds != null && menuBtnBounds.contains(e.getPoint())) {
+            SwingUtilities.getWindowAncestor(this).dispose();
+            new StartPage(null).setVisible(true);
+        }
     }
  
     void saveHighScore(){
@@ -386,41 +407,6 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         buildShields();
         gameState = "playing";
         timer.start();
-    }
-
-    void showExitButton() {
-        JButton exit = new JButton("BACK TO MENU") {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setColor(Color.BLACK);
-                g2.fillRect(0, 0, getWidth(), getHeight());
-                g2.setColor(new Color(255, 80, 80));
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRect(1, 1, getWidth()-3, getHeight()-3);
-                g2.setColor(Color.WHITE);
-                g2.setFont(getFont());
-                FontMetrics fm = g2.getFontMetrics();
-                g2.drawString(getText(), (getWidth()-fm.stringWidth(getText()))/2,
-                    (getHeight()+fm.getAscent()-fm.getDescent())/2);
-            }
-        };
-        exit.setFont(new Font("Monospaced", Font.BOLD, 13));
-        exit.setFocusPainted(false);
-        exit.setBorderPainted(false);
-        exit.setContentAreaFilled(false);
-        exit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        exit.setBounds(270, 390, 260, 44); // positioned below the overlay card
-        exit.addActionListener(e -> {
-            SwingUtilities.getWindowAncestor(this).dispose();
-            new StartPage(null).setVisible(true);
-        });
-
-        setLayout(null);
-        add(exit);
-        exit.setVisible(true);
-        revalidate();
-        repaint();
     }
  
     @Override public void mousePressed(MouseEvent e)  {}
