@@ -96,21 +96,10 @@ public class StartPage extends JDialog {
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
  
-        // High score display
-        JLabel highScore = new JLabel("INSERT COIN TO PLAY", SwingConstants.CENTER);
+        JLabel highScore = new JLabel("HIGH SCORE: 000000", SwingConstants.CENTER);
         highScore.setFont(new Font("Monospaced", Font.BOLD, 12));
         highScore.setForeground(new Color(255, 220, 0));
         highScore.setAlignmentX(Component.CENTER_ALIGNMENT);
- 
-        // Blinking animation for high score label
-        Timer blink = new Timer(600, e -> {
-            highScore.setVisible(!highScore.isVisible());
-        });
-        blink.start();
- 
-        centerPanel.add(Box.createVerticalStrut(10));
-        centerPanel.add(highScore);
-        centerPanel.add(Box.createVerticalStrut(30));
  
         // Controls info
         String[] controls = {
@@ -133,7 +122,6 @@ public class StartPage extends JDialog {
         JButton startBtn = makeRetroButton("▶  START GAME", new Color(0, 255, 100));
         startBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         startBtn.addActionListener(e -> {
-            blink.stop();
             start = true;
             setVisible(false);
             dispose();
@@ -143,7 +131,6 @@ public class StartPage extends JDialog {
         JButton quitBtn = makeRetroButton("✕  QUIT", new Color(255, 80, 80));
         quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         quitBtn.addActionListener(e -> {
-            blink.stop();
             start = false;
             setVisible(false);
             dispose();
