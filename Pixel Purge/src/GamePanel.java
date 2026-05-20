@@ -363,7 +363,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     void saveHighScore(){
         try{
             ArrayList<String> user = new ArrayList<>();
-            try (Scanner scanner = prompt.getInputScanner()) { // checks scanner
+            try (Scanner scanner = Prompt.getInputScanner()) { // checks scanner
                 while (scanner.hasNextLine()) {
                     user.add(scanner.nextLine());
                 }

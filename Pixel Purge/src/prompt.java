@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class prompt {
+public class Prompt {
     public static File getInputFile() { // checks if the file exists and is readable
         File file = new File("Registration.txt");
         if (file.exists() && file.canRead()) {

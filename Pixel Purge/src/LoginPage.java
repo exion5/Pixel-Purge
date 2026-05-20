@@ -100,7 +100,7 @@ public class LoginPage extends JDialog { // dialog is chosen because the login p
         registerPage.add(rBtns);
  
         lBtn.addActionListener(e -> { // creates the page functionality
-            try (Scanner scanner = prompt.getInputScanner()) {
+            try (Scanner scanner = Prompt.getInputScanner()) {
                 while (scanner.hasNextLine()) {
                     String userS = scanner.nextLine();
                     String passS = scanner.nextLine();
@@ -130,7 +130,7 @@ public class LoginPage extends JDialog { // dialog is chosen because the login p
             String user = usernameR.getText();
             String pass = new String(passwordR.getPassword());
             if (!user.isEmpty() && !pass.isEmpty()) {
-                try (PrintWriter fileOut = prompt.getPrintWriter()) {
+                try (PrintWriter fileOut = Prompt.getPrintWriter()) {
                     if (fileOut != null) {
                         fileOut.println(user);
                         fileOut.println(pass);
