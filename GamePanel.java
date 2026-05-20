@@ -291,7 +291,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         g2.setColor(new Color(0, 0, 0, 200)); // dims background
         g2.fillRect(0, 0, 800, 600);
  
-        int cw = 480, ch = 220;
+        int cw = 480, ch = 180;
         int cx = (800 - cw) / 2, cy = (600 - ch) / 2;
         g2.setColor(new Color(10, 10, 10));
         g2.fillRect(cx, cy, cw, ch);
@@ -388,16 +388,13 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         timer.start();
     }
 
-    void exitButton(){
-        removeAll();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    
-        add(Box.createVerticalGlue());
-        
+    void showExitButton() {
         JButton exit = new JButton("BACK TO MENU") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(Color.BLACK);
+                g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.setColor(new Color(255, 80, 80));
                 g2.setStroke(new BasicStroke(2));
                 g2.drawRect(1, 1, getWidth()-3, getHeight()-3);
@@ -409,21 +406,19 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             }
         };
         exit.setFont(new Font("Monospaced", Font.BOLD, 13));
-        exit.setPreferredSize(new Dimension(260, 44));
-        exit.setMaximumSize(new Dimension(260, 44));
-        exit.setAlignmentX(Component.CENTER_ALIGNMENT);
         exit.setFocusPainted(false);
         exit.setBorderPainted(false);
         exit.setContentAreaFilled(false);
         exit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+        exit.setBounds(270, 390, 260, 44); // positioned below the overlay card
         exit.addActionListener(e -> {
             SwingUtilities.getWindowAncestor(this).dispose();
             new StartPage(null).setVisible(true);
         });
-        
+
+        setLayout(null);
         add(exit);
-        add(Box.createVerticalGlue());
+        exit.setVisible(true);
         revalidate();
         repaint();
     }
