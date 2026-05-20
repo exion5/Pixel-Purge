@@ -83,12 +83,14 @@ public class StartPage extends JDialog {
             titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
         }
         titleLabel.setForeground(new Color(0, 255, 100));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(130, 0, 0, 0));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
  
         // Subtitle
         JLabel subLabel = new JLabel("- SPACE DEFENDER -", SwingConstants.CENTER);
         subLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
         subLabel.setForeground(new Color(100, 200, 255));
+        subLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
  
         // Center panel with buttons
         JPanel centerPanel = new JPanel();
@@ -169,7 +171,8 @@ public class StartPage extends JDialog {
         JPanel outerPanel = new JPanel();
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         outerPanel.setBackground(Color.BLACK);
-        outerPanel.add(Box.createVerticalGlue());
+        outerPanel.setPreferredSize(new Dimension(580, 510));
+        outerPanel.add(Box.createVerticalStrut(100));
         outerPanel.add(titleLabel);
         outerPanel.add(Box.createVerticalStrut(6));
         outerPanel.add(subLabel);
