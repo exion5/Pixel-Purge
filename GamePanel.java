@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
  
 class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
  
@@ -107,6 +109,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                 // If enemies reach player level
                 if (enemy.y > 500) {
                     gameState = "gameover";
+                    saveHighScore();
                     timer.stop();
                     return;
                 }
@@ -127,6 +130,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             level++;
             if (level > 5) {
                 gameState = "win";
+                saveHighScore();
                 timer.stop();
             } else {
                 spawnEnemies();
@@ -136,6 +140,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
  
         if (lives <= 0) {
             gameState = "gameover";
+            saveHighScore();
             timer.stop();
         }
     }
@@ -335,6 +340,31 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             bullets.add(new Bullet(player.x + 18, player.y, -8));
     }
  
+    void saveHighScore(){
+        ArrayList<String> user = new ArrayList<>();
+        try (Scanner scanner = prompt.getInputScanner()) { // checks scanner
+            while (scanner.hasNextLine()) {
+                user.add(scanner.nextLine());
+            }
+        }
+        int highScore = 0;
+        if (user.size() >= 3) {
+            try {
+                highScore = Integer.parseInt(user.get(2).trim()); // gets every 3rd line
+            } catch (NumberFormatException e) {
+                highScore = 0;
+            }
+        }
+        if (score > highScore){
+            user.set(2, String.valueOf(score));
+            try (PrintWriter a = prompt.getPrintWriter()) {
+                for (String s : user) {
+                    a.println(s);
+                }
+            }
+        }
+    }
+    
     void restartGame() {
         score = 0;
         lives = 3;
