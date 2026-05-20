@@ -103,18 +103,16 @@ public class LoginPage extends JDialog { // dialog is chosen because the login p
             try (Scanner scanner = prompt.getInputScanner()) {
                 while (scanner.hasNextLine()) {
                     String userS = scanner.nextLine();
-                    if (scanner.hasNextLine()) {
-                        String passS = scanner.nextLine();
-                        if (username.getText().equals(userS) &&
-                            new String(password.getPassword()).equals(passS)) {
-                            loggedIn = true;
-                            user = username.getText();
-                            username.setText("");
-                            password.setText("");
-                            setVisible(false);
-                            dispose();
-                            return;
-                        }
+                    String passS = scanner.nextLine();
+                    String score = scanner.nextLine();
+                    if (username.getText().equals(userS) && new String(password.getPassword()).equals(passS)) {
+                        loggedIn = true;
+                        user = username.getText();
+                        username.setText("");
+                        password.setText("");
+                        setVisible(false);
+                        dispose();
+                        return;
                     }
                 }
             }

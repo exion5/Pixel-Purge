@@ -101,8 +101,8 @@ public class StartPage extends JDialog {
         JButton loginBtn = makeRetroButton("🔒  BACK TO LOGIN", new Color(0, 0, 255)); // sends user back to the login
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginBtn.addActionListener(e -> {
+            start = false;
             dispose();
-            PixelPurge.launchLogin();
         });
  
         centerPanel.add(startBtn);

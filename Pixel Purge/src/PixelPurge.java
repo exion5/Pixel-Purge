@@ -26,7 +26,7 @@ public class PixelPurge {
             GameFrame game = new GameFrame(username); // opens the actual game when the start button is pressed
             game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } else {
-            System.exit(0);
+            launchLogin();
         }
     }
 }

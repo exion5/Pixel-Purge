@@ -6,18 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class prompt {
-    public static File getInputFile() { // checks if the file exists and is readable, if not it will ask the user to try again until it is valid
-        File file;
-        boolean isValid = false;
-        do {
-            String filename = "Registration.txt";
-            file = new File(filename);
-            if (file.exists() && file.canRead()) {
-                isValid = true;
-            } else {
-                System.out.println("File not found or not readable. Try again.");
-            }
-        } while (!isValid);
+    public static File getInputFile() { // checks if the file exists and is readable
+        File file = new File("Registration.txt");
+        if (file.exists() && file.canRead()) {
+            return file;
+        }
+        System.out.println("Looking in: " + file.getAbsolutePath());
         return file;
     }
 
