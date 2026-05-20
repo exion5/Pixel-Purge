@@ -1,12 +1,6 @@
 Liam
 Pham
-100
-Bob
-Ross
-0
-Liam
-Pham
-400
+200
 Bob
 Ross
 0

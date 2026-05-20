@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.nio.file.*;
+import java.util.List;
  
 public class StartPage extends JDialog {
     private boolean start = false;
@@ -98,7 +100,20 @@ public class StartPage extends JDialog {
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
  
-        JLabel highScore = new JLabel("HIGH SCORE: 000000", SwingConstants.CENTER);
+        int hs = 0;
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("Registration.txt"));
+            for (int i = 0; i + 2 < lines.size(); i += 3) {
+                if (lines.get(i).trim().equals(username)) {
+                    hs = Integer.parseInt(lines.get(i + 2).trim());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JLabel highScore = new JLabel(String.format("HIGH SCORE: %06d", hs), SwingConstants.CENTER);
         highScore.setFont(new Font("Monospaced", Font.BOLD, 12));
         highScore.setForeground(new Color(255, 220, 0));
         highScore.setAlignmentX(Component.CENTER_ALIGNMENT);
