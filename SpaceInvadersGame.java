@@ -1,0 +1,26 @@
+import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
+
+public class SpaceInvadersGame {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            LoginPage lp = new LoginPage(null);
+            lp.setVisible(true); 
+
+            if (lp.getLoggedIn()) {
+                lp.dispose();
+                StartPage start = new StartPage(null);
+                start.setVisible(true);
+                if (start.getStart()){
+                    start.dispose();
+                    GameFrame game = new GameFrame();
+                    game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    System.exit(0); 
+                }
+            } else {
+                System.exit(0); 
+            }
+        });
+    }
+}
