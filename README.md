@@ -25,9 +25,9 @@ You must turn the folder into a Java Project through VSCode. Ensure you have the
 
 ## Controls
 
-`←` / `→` to Move left / right
-`↑` or Mouse Click to Shoot
-`R` to Restart after game over
+- `←` / `→` to Move left / right
+- `↑` or Mouse Click to Shoot
+- `R` to Restart after game over
 
 ---
 
@@ -42,19 +42,19 @@ You must turn the folder into a Java Project through VSCode. Ensure you have the
 
 ## Project Structure
 
-`PixelPurge.java` - Manages flow between login, start, and game screens
-`GamePanel.java` - Handles the main game loop, rendering, inputs keys, and collision detection
-`GameFrame.java` - JFrame wrapper for the game panel
-`GameObject.java` - Abstract base class for all game objects
-`Player.java` - Player ship that the user controls
-`Enemy.java` - Three enemy types with pixel art
-`Bullet.java` - Bullets fired by both player and enemies
-`ShieldBlock.java` - Destructible shield blocks with 3 health
-`Powerup.java` - Falling powerups (Shield / Life)
-`LoginPage.java` - Login and registration
-`StartPage.java` - Start screen with high score, controls, and music player
-`Sound.java` - Background music and sound effect management
-`Prompt.java` - File I/O utility for reading and writing to `Registration.txt`
+- `PixelPurge.java` - Manages flow between login, start, and game screens
+- `GamePanel.java` - Handles the main game loop, rendering, inputs keys, and collision detection
+- `GameFrame.java` - JFrame wrapper for the game panel
+- `GameObject.java` - Abstract base class for all game objects
+- `Player.java` - Player ship that the user controls
+- `Enemy.java` - Three enemy types with pixel art
+- `Bullet.java` - Bullets fired by both player and enemies
+- `ShieldBlock.java` - Destructible shield blocks with 3 health
+- `Powerup.java` - Falling powerups (Shield / Life)
+- `LoginPage.java` - Login and registration
+- `StartPage.java` - Start screen with high score, controls, and music player
+- `Sound.java` - Background music and sound effect management
+- `Prompt.java` - File I/O utility for reading and writing to `Registration.txt`
 
 ---
 
