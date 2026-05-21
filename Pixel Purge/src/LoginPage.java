@@ -11,7 +11,12 @@ public class LoginPage extends JDialog { // dialog is chosen because the login p
     public LoginPage(Frame owner) {
         super(owner, "Pixel Purge - Login", true);
         setModal(true);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) { 
+                System.exit(0); 
+            } 
+        });
         setSize(580, 510);
         setLocationRelativeTo(null);
         setResizable(false);

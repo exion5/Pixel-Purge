@@ -9,7 +9,12 @@ public class StartPage extends JDialog {
     public StartPage(Frame owner, String username) {
         super(owner, "Pixel Purge", true);
         setModal(true);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) { 
+                System.exit(0); 
+            } 
+        });
         setSize(580, 510);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -67,7 +72,7 @@ public class StartPage extends JDialog {
         highScore.setAlignmentX(Component.CENTER_ALIGNMENT);
  
         String[] controls = { // controls text
-            "LEFT RIGHT to MOVE    SPACE or UP to SHOOT",
+            "LEFT RIGHT to MOVE    UP to SHOOT",
             "DESTROY ALL INVADERS",
             "COLLECT POWERUPS"
         };
@@ -82,9 +87,10 @@ public class StartPage extends JDialog {
  
         centerPanel.add(Box.createVerticalStrut(25));
  
-        JButton startBtn = makeRetroButton("▶  START GAME", new Color(0, 255, 100)); // start button for game
-        startBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startBtn.addActionListener(e -> {
+        JButton startB = makeRetroButton("▶  START GAME", new Color(0, 255, 100)); // start button for game
+        startB.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startB.addActionListener(e -> {
+            Sound.stopBgMusic();
             start = true;
             setVisible(false);
             dispose();
@@ -102,10 +108,11 @@ public class StartPage extends JDialog {
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginBtn.addActionListener(e -> {
             start = false;
+            Sound.stopBgMusic();
             dispose();
         });
  
-        centerPanel.add(startBtn);
+        centerPanel.add(startB);
         centerPanel.add(Box.createVerticalStrut(7));
         centerPanel.add(loginBtn);
         centerPanel.add(Box.createVerticalStrut(7));
@@ -148,7 +155,34 @@ public class StartPage extends JDialog {
         outerPanel.add(Box.createVerticalGlue());
         outerPanel.add(bottomPanel);
  
-        add(outerPanel);
+        JLayeredPane layered = new JLayeredPane();
+        layered.setPreferredSize(new Dimension(580, 510));
+
+        outerPanel.setBounds(0, 0, 580, 510);
+        layered.add(outerPanel, JLayeredPane.DEFAULT_LAYER);
+
+        JButton nextBtn = makeRetroButton("⏭  NEXT SONG", new Color(255, 180, 0));
+        nextBtn.setMaximumSize(new Dimension(110, 20));
+        nextBtn.setFont(new Font("Monospaced", Font.BOLD, 10));
+
+        JSlider volumeSlider = new JSlider(0, 100, 75);
+        volumeSlider.setMaximumSize(new Dimension(110, 26));
+        volumeSlider.setOpaque(false);
+        volumeSlider.addChangeListener(e -> Sound.setVolume(volumeSlider.getValue() / 100f));
+        nextBtn.addActionListener(e -> Sound.nextTrack());
+
+        JPanel musicPanel = new JPanel();
+        musicPanel.setLayout(new BoxLayout(musicPanel, BoxLayout.Y_AXIS));
+        musicPanel.setOpaque(false);
+        nextBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        volumeSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
+        musicPanel.add(nextBtn);
+        musicPanel.add(volumeSlider);
+        musicPanel.setBounds(455, 8, 120, 70);
+        layered.add(musicPanel, JLayeredPane.PALETTE_LAYER);
+
+        add(layered);
+        Sound.playPlaylist(new String[]{"Audio/Jasmine.wav", "Audio/The Color Violet.wav"});
     }
  
     private JButton makeRetroButton(String text, Color accent) { // creates the retro style buttons (gui design inspired by arcade games)
