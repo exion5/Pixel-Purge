@@ -9,7 +9,7 @@ class Enemy extends GameObject { // creates the enemies in the game, which are p
     }
  
     @Override
-    void update() {
+    void update() { // moves the enemy left and right
         x += dx;
     }
  
@@ -31,8 +31,7 @@ class Enemy extends GameObject { // creates the enemies in the game, which are p
         }
     }
  
-    // Classic crab-style invader
-    private void drawCrabInvader(Graphics2D g, Color c) {
+    private void drawCrabInvader(Graphics2D g, Color c) { // crab look enemy
         g.setColor(c);
         int[][] shape = { // matrix to create pixelated look of the invader
             {0,0,1,0,0,0,1,0,0},
@@ -48,13 +47,11 @@ class Enemy extends GameObject { // creates the enemies in the game, which are p
             for (int cc = 0; cc < shape[r].length; cc++)
                 if (shape[r][cc] == 1)
                     g.fillRect(x + cc * ps, y + r * ps, ps, ps);
-        // Glow
-        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40));
+        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40)); // creates a small glow
         g.fillOval(x - 2, y - 2, 34, 24);
     }
  
-    // Squid-style invader
-    private void drawSquidInvader(Graphics2D g, Color c) {
+    private void drawSquidInvader(Graphics2D g, Color c) { // squid look enemy
         g.setColor(c);
         int[][] shape = { // matrix to create pixelated look of the invader
             {0,0,0,1,1,0,0,0},
@@ -70,12 +67,11 @@ class Enemy extends GameObject { // creates the enemies in the game, which are p
             for (int cc = 0; cc < shape[r].length; cc++)
                 if (shape[r][cc] == 1)
                     g.fillRect(x + cc * ps + 3, y + r * ps, ps, ps);
-        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40));
+        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40)); // small glow
         g.fillOval(x - 2, y - 2, 34, 24);
     }
  
-    // Octopus-style invader
-    private void drawOctopusInvader(Graphics2D g, Color c) {
+    private void drawOctopusInvader(Graphics2D g, Color c) { // octopus look enemy
         g.setColor(c);
         int[][] shape = { // matrix to create pixelated look of the invader
             {0,0,1,1,1,1,0,0},
@@ -87,11 +83,11 @@ class Enemy extends GameObject { // creates the enemies in the game, which are p
             {1,0,1,0,0,1,0,1},
         };
         int ps = 3;
-        for (int r = 0; r < shape.length; r++)
-            for (int cc = 0; cc < shape[r].length; cc++)
-                if (shape[r][cc] == 1)
-                    g.fillRect(x + cc * ps, y + r * ps, ps, ps);
-        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40));
+        for (int r = 0; r < shape.length; r++) // draws the enemy based on the matrix
+            for (int i = 0; i < shape[r].length; i++)
+                if (shape[r][i] == 1)
+                    g.fillRect(x + i * ps, y + r * ps, ps, ps);
+        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 40)); // small glow
         g.fillOval(x - 2, y - 2, 34, 24);
     }
 }

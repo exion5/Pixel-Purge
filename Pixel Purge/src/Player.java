@@ -1,6 +1,6 @@
 import java.awt.*;
 
-class Player extends GameObject {
+class Player extends GameObject { // creates the player object, which is a pixelated spaceship that can move left and right across the bottom of the screen and shoot bullets upwards to destroy the invading pixel enemies
     int speed = 6;
     boolean movingLeft = false;
     boolean movingRight = false;
@@ -33,7 +33,7 @@ class Player extends GameObject {
     }
 
     @Override
-    void draw(Graphics2D g) {
+    void draw(Graphics2D g) { // draws the player's ship with a pixelated retro look, and also creates an engine exhaust effect that flickers for added visual interest
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Color exhaustColor;

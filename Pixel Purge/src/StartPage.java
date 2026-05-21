@@ -3,10 +3,10 @@ import java.awt.*;
 import java.nio.file.*;
 import java.util.List;
  
-public class StartPage extends JDialog {
+public class StartPage extends JDialog { // the start page that shows when the user logs in, showing the title, controls, and high score, and has buttons to start the game, go back to login, or quit
     private boolean start = false;
  
-    public StartPage(Frame owner, String username) {
+    public StartPage(Frame owner, String username) { // constructor
         super(owner, "Pixel Purge", true);
         setModal(true);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -140,7 +140,6 @@ public class StartPage extends JDialog {
         rootPanel.setBackground(Color.BLACK);
         rootPanel.add(titleLabel, BorderLayout.CENTER);
  
-        // Use layered pane approach - simpler stacking
         JPanel outerPanel = new JPanel();
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         outerPanel.setBackground(Color.BLACK);

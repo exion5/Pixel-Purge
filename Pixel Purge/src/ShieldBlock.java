@@ -11,10 +11,16 @@ class ShieldBlock extends GameObject { // the shield in front of the player in g
     void update() {}
 
     @Override
-    void draw(Graphics2D g) {
-        if (health == 3) g.setColor(Color.WHITE);
-        else if (health == 2) g.setColor(Color.LIGHT_GRAY);
-        else g.setColor(Color.GRAY);
+    void draw(Graphics2D g) { // the shield changes color as it takes damage, starting white and ending gray when destroyed
+        if (health == 3){
+            g.setColor(Color.WHITE);
+        }
+        else if (health == 2) {
+            g.setColor(Color.LIGHT_GRAY);
+        }
+        else {
+            g.setColor(Color.GRAY);
+        }
 
         g.fillRect(x, y, width, height);
     }

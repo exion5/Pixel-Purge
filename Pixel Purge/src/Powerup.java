@@ -9,7 +9,7 @@ public class Powerup extends GameObject { // creates the powerups that fall down
     }
     
     @Override
-    void update(){
+    void update(){ // moves the powerup down and checks if it goes off screen
         y+= 5;
         if (y > 600){
             alive = false;

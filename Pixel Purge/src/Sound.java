@@ -1,7 +1,7 @@
 import javax.sound.sampled.*;
 import java.io.File;
 
-public class Sound {
+public class Sound { // handles all the sound effects and background music in the game
 
     private static Clip background = null;
     private static String[] playlist = {};
@@ -9,12 +9,12 @@ public class Sound {
     private static float volume = 0.75f;
     private static boolean skipping = false;
 
-    public static void setPlaylist(String[] files) {
+    public static void setPlaylist(String[] files) { // sets the playlist
         playlist = files;
         track = 0;
     }
 
-    public static void playBgMusic(String filename) {
+    public static void playBgMusic(String filename) { //plays background music
         stopBgMusic();
         try {
             AudioInputStream input = AudioSystem.getAudioInputStream(new File(filename));
@@ -23,20 +23,23 @@ public class Sound {
             background.start();
             applyVolume(background);
             background.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP && background != null && !skipping)
+                if (event.getType() == LineEvent.Type.STOP && background != null && !skipping) {
                     playNext();
+                }
             });
         } catch (Exception e) {
             System.out.println("BGM Error: " + e.getMessage());
         }
     }
 
-    public static void playPlaylist(String[] files) {
+    public static void playPlaylist(String[] files) { // convenience method to set the playlist and start playing the first track
         setPlaylist(files);
-        if (playlist.length > 0) playBgMusic(playlist[0]);
+        if (playlist.length > 0) {
+            playBgMusic(playlist[0]);
+        }
     }
 
-    public static void nextTrack() {
+    public static void nextTrack() { // skips to the next track in the playlist
         if (playlist.length == 0) return;
         skipping = true;
         track = (track + 1) % playlist.length;
@@ -44,13 +47,13 @@ public class Sound {
         skipping = false;
     }
 
-    private static void playNext() {
+    private static void playNext() { // automatically plays the next track when the current one finishes
         if (playlist.length == 0) return;
         track = (track + 1) % playlist.length;
         playBgMusic(playlist[track]);
     }
 
-    public static void stopBgMusic() {
+    public static void stopBgMusic() { // stops the background music
         if (background != null && background.isRunning()) {
             background.stop();
             background.close();
@@ -58,12 +61,12 @@ public class Sound {
         }
     }
 
-    public static void setVolume(float vol) {
+    public static void setVolume(float vol) { // sets the volume for the music
         volume = Math.max(0f, Math.min(1f, vol));
         applyVolume(background);
     }
 
-    private static void applyVolume(Clip clip) {
+    private static void applyVolume(Clip clip) { // applies volume to the audio clip
         if (clip == null) {
             return;
         }
@@ -91,7 +94,7 @@ public class Sound {
         }
     }
 
-    public static void sfx(String filename) {
+    public static void sfx(String filename) { // plays a sound effect
         try {
             AudioInputStream input = AudioSystem.getAudioInputStream(new File(filename));
             Clip clip = AudioSystem.getClip();

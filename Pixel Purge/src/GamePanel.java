@@ -19,7 +19,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     int score = 0;
     int lives = 3;
     int level = 1;
-    Rectangle menuBtnBounds = null;
+    Rectangle menu = null;
     String currentUser = "";
 
     String gameState = "playing"; // playing, gameover, win
@@ -27,15 +27,12 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     Font retroLarge = null;
     Font retroSmall = null;
     Timer timer;
-
-    private int hudPulse = 0;
-    private boolean hudPulseUp = true;
  
     GamePanel() {
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
  
-        try {
+        try { // creates the retro font
             retroLarge = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"))
                              .deriveFont(Font.BOLD, 20f);
             retroSmall = retroLarge.deriveFont(Font.BOLD, 12f);
@@ -49,21 +46,21 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         spawnEnemies();
         buildShields();
  
-        timer = new Timer(16, this);
+        timer = new Timer(16, this); // tries to cap the game at roughly 60 FPS, 1000ms / 60 = 16.67ms per frame
         timer.start();
  
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true);
-        Sound.playPlaylist(new String[]{"Pixel Purge/Audio/Reminder.wav"});
+        Sound.playPlaylist(new String[]{"Pixel Purge/Audio/Reminder.wav"}); // background music
     }
  
     void spawnEnemies() { // spawns enemies in a grid formation, increases as levels go up
         enemies.clear();
         int rows = Math.min(3 + (level - 1), 5);
         for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < 8; col++) {
-                Enemy e = new Enemy(50 + col * 60, 50 + row * 40);
+            for (int i = 0; i < 8; i++) {
+                Enemy e = new Enemy(50 + i * 60, 50 + row * 40);
                 e.dx = 2 + (level - 1);
                 e.row = row; // store row for different colors
                 enemies.add(e);
@@ -82,12 +79,8 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     }
  
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (gameState.equals("playing")) {
-            updateGame();
-        }
-        if (hudPulseUp) { hudPulse++; if (hudPulse >= 10) hudPulseUp = false; }
-        else             { hudPulse--; if (hudPulse <= 0)  hudPulseUp = true;  }
+    public void actionPerformed(ActionEvent e) { // allows game to continuously update and repaint
+        if (gameState.equals("playing")) updateGame();
         repaint();
     }
  
@@ -106,7 +99,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             if (enemy.x < 0 || enemy.x > 760) changeDirection = true;
         }
  
-        if (changeDirection) {
+        if (changeDirection) { // if any enemy hits the wall, they all change direction and move down
             for (Enemy enemy : enemies) {
                 enemy.dx *= -1;
                 enemy.y += 20;
@@ -120,8 +113,12 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             }
         }
  
-        for (Bullet b : bullets) b.update();
-        for (Powerup p : powerup) p.update();
+        for (Bullet b : bullets){
+            b.update();
+        }
+        for (Powerup p : powerup){
+            p.update();
+        }
  
         checkCollisions();
  
@@ -166,8 +163,14 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                         score += 100 * level;
                         Sound.sfx("Pixel Purge/Audio/shot.wav");
  
-                        if (Math.random() < 0.05) {
-                            String power = Math.random() < 0.5 ? "Shield" : "Life";
+                        if (Math.random() < 0.05) { // gives the player a 5% chance to get a powerup when they kill an enemy
+                            String[] powers = {"Shield", "Life"}; // two types of powerups, one gives the player an extra life, the other repairs the shields
+                            String power = "";
+                            if (lives >= 3){
+                                power = "Shield";
+                            } else {
+                                power = powers[(int)(Math.random() * 2)]; // randomly selects a powerup
+                            }
                             powerup.add(new Powerup(e.x, e.y, power));
                         }
                     }
@@ -184,7 +187,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                 }
             }
  
-            for (ShieldBlock s : shields) {
+            for (ShieldBlock s : shields) { // bullets hit the shield blocks, which have 3 health and can be repaired with powerups
                 if (br.intersects(s.getBounds())) {
                     s.health--;
                     b.alive = false;
@@ -194,7 +197,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
             }
         }
  
-        for (Powerup p : powerup) {
+        for (Powerup p : powerup) { // player collects powerups by touching them, checks if player is already at max lives before giving life powerup
             if (p.getBounds().intersects(player.getBounds())) {
                 p.alive = false;
                 if (p.type.equals("Life") && lives < 3) {
@@ -209,45 +212,35 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     }
  
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) { // draws everything on the screen, from the player and enemies to the background and UI
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
  
-        // Starfield
-        drawStarfield(g2);
- 
         if (gameState.equals("playing")) {
             player.draw(g2); // draws the player, enemies, bullets, shields, and powerups
-            for (Enemy enemy : enemies) enemy.draw(g2);
-            for (Bullet bullet : bullets) bullet.draw(g2);
-            for (ShieldBlock s : shields) s.draw(g2);
-            for (Powerup p : powerup) p.draw(g2);
+            for (Enemy enemy : enemies){
+                enemy.draw(g2);
+            }
+            for (Bullet bullet : bullets){
+                bullet.draw(g2);
+            }
+            for (ShieldBlock s : shields){
+                s.draw(g2);
+            }
+            for (Powerup p : powerup){
+                p.draw(g2);
+            }
  
             drawHUD(g2);
         } else if (gameState.equals("gameover")) {
-            drawOverlay(g2, "GAME OVER", new Color(255, 60, 60),
-                "SCORE: " + score, "PRESS R TO RESTART");
+            drawOverlay(g2, "GAME OVER", new Color(255, 60, 60), "SCORE: " + score, "PRESS R TO RESTART");
         } else if (gameState.equals("win")) {
-            drawOverlay(g2, "YOU WIN!", new Color(0, 255, 100),
-                "FINAL SCORE: " + score, "PRESS R TO RESTART");
+            drawOverlay(g2, "YOU WIN!", new Color(0, 255, 100), "FINAL SCORE: " + score, "PRESS R TO RESTART");
         }
     }
  
-    void drawStarfield(Graphics2D g2) { // draws a bunch of stars in the background
-        g2.setColor(new Color(255, 255, 255, 50));
-        Random rand = new Random(12345);
-        
-        for (int i = 0; i < 60; i++) {
-            int sx = rand.nextInt(800);
-            int sy = rand.nextInt(600);
-            int size = (i % 5 == 0) ? 2 : 1;
-            
-            g2.fillOval(sx, sy, size, size);
-        }
-    }
- 
-    void drawHUD(Graphics2D g2) {
+    void drawHUD(Graphics2D g2) { // draws the score, level, and lives at the top of the screen
         g2.setColor(new Color(0, 0, 0, 180)); // background bar
         g2.fillRect(0, 0, 800, 48);
         g2.setColor(new Color(0, 255, 100, 80));
@@ -273,31 +266,29 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
  
         int heartX = 680;
         for (int i = 0; i < 3; i++) {
-            if (i < lives) { // pulsates when down to last life
-                Color heartColor = (lives <= 1 && i == 0)
-                    ? new Color(255, 50 + hudPulse * 8, 50 + hudPulse * 8)
-                    : new Color(255, 60, 80);
-                drawHeart(g2, heartX + i * 30, 26, 14, heartColor);
-            } else { // creates empty heart
-                drawHeart(g2, heartX + i * 30, 26, 14, new Color(60, 60, 60));
+            Color heartColor;
+            if (i >= lives) { // changes heart color based on how many lives the player has left
+                heartColor = new Color(60, 60, 60);
+            } else {
+                heartColor = new Color(255, 60, 80);
             }
+            drawHeart(g2, heartX + i * 30, 26, 14, heartColor);
         }
-        g2.setColor(new Color(0, 255, 100, 40));
-        g2.drawLine(0, 570, 800, 570);
-    }
+                g2.setColor(new Color(0, 255, 100, 40));
+                g2.drawLine(0, 570, 800, 570);
+            }
  
     void drawHeart(Graphics2D g2, int cx, int cy, int size, Color c) { // creates the heart
         g2.setColor(c);
         int s = size / 4;
-        g2.fillRect(cx + s,       cy,           s * 2, s);
-        g2.fillRect(cx + s * 3,   cy,           s * 2, s);
-        g2.fillRect(cx,           cy + s,       s * 6, s * 2);
-        g2.fillRect(cx + s,       cy + s * 3,   s * 4, s);
-        g2.fillRect(cx + s * 2,   cy + s * 4,   s * 2, s);
+        g2.fillRect(cx + s, cy, s * 2, s);
+        g2.fillRect(cx + s * 3, cy, s * 2, s);
+        g2.fillRect(cx, cy + s, s * 6, s * 2);
+        g2.fillRect(cx + s, cy + s * 3, s * 4, s);
+        g2.fillRect(cx + s * 2, cy + s * 4, s * 2, s);
     }
  
-    void drawOverlay(Graphics2D g2, String title, Color titleColor,
-                     String sub1, String sub2) { // UI Changes
+    void drawOverlay(Graphics2D g2, String title, Color titleColor, String sub1, String sub2) { // draws the game over and win screens, which includes the title, score, and restart instructions
         g2.setColor(new Color(0, 0, 0, 200)); // dims background
         g2.fillRect(0, 0, 800, 600);
  
@@ -319,10 +310,8 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         g2.setColor(Color.WHITE);
         fm = g2.getFontMetrics();
         g2.drawString(sub1, cx + (cw - fm.stringWidth(sub1)) / 2, cy + 115);
-        if ((System.currentTimeMillis() / 500) % 2 == 0) {
-            g2.setColor(new Color(200, 200, 200));
-            g2.drawString(sub2, cx + (cw - fm.stringWidth(sub2)) / 2, cy + 155);
-        }
+        g2.setColor(new Color(200, 200, 200));
+        g2.drawString(sub2, cx + (cw - fm.stringWidth(sub2)) / 2, cy + 155);
 
         int bw = 220, bh = 40; // exit button
         int bx = cx + (cw - bw) / 2, by = cy + 200;
@@ -337,7 +326,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         String btnText = "BACK TO MENU";
         g2.drawString(btnText, bx + (bw - fm.stringWidth(btnText)) / 2, by + (bh + fm.getAscent() - fm.getDescent()) / 2);
 
-        menuBtnBounds = new Rectangle(bx, by, bw, bh);
+        menu = new Rectangle(bx, by, bw, bh);
     }
 
     @Override
@@ -353,24 +342,25 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
     }
  
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) { // stops player movement when keys are released
         if (e.getKeyCode() == KeyEvent.VK_LEFT)  player.movingLeft  = false;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) player.movingRight = false;
     }
  
-    @Override public void keyTyped(KeyEvent e) {}
+    @Override 
+    public void keyTyped(KeyEvent e) {} // not used but required by KeyListener interface
  
     @Override
-    public void mouseClicked(MouseEvent e) {
-        if (gameState.equals("playing")) {
+    public void mouseClicked(MouseEvent e) { // allows player to click the back to menu button on the game over and win screens
+        if (gameState.equals("playing")) { // if the game is still going, clicking will also shoot a bullet, this is intentional to add a bit of interactivity to the game while the player is waiting for the next level to start
             bullets.add(new Bullet(player.x + 18, player.y, -8));
-        } else if (menuBtnBounds != null && menuBtnBounds.contains(e.getPoint())) {
+        } else if (menu != null && menu.contains(e.getPoint())) { // checks if the back to menu button is clicked
             SwingUtilities.getWindowAncestor(this).dispose();
             PixelPurge.launchStart(currentUser);
         }
     }
  
-    void saveHighScore(){
+    void saveHighScore(){ // saves the player's high score to Registration.txt, checks if the player already has a high score and only updates it if the new score is higher
         try{
             ArrayList<String> user = new ArrayList<>();
             try (Scanner scanner = Prompt.getInputScanner()) { // checks scanner
