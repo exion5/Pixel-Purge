@@ -15,7 +15,7 @@ public class StartPage extends JDialog {
                 System.exit(0); 
             } 
         });
-        setSize(580, 510);
+        setSize(600, 550);
         setLocationRelativeTo(null);
         setResizable(false);
  

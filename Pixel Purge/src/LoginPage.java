@@ -17,7 +17,7 @@ public class LoginPage extends JDialog { // dialog is chosen because the login p
                 System.exit(0); 
             } 
         });
-        setSize(580, 510);
+        setSize(600, 550);
         setLocationRelativeTo(null);
         setResizable(false);
  
