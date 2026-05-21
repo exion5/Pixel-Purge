@@ -55,7 +55,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true);
-        Sound.playPlaylist(new String[]{"Audio/Reminder.wav"});
+        Sound.playPlaylist(new String[]{"Pixel Purge/Audio/Reminder.wav"});
     }
  
     void spawnEnemies() { // spawns enemies in a grid formation, increases as levels go up
@@ -132,10 +132,10 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
 
         if (enemies.isEmpty()) { // win condition
             level++;
-            Sound.sfx("Audio/beatLevel.wav");
+            Sound.sfx("Pixel Purge/Audio/beatLevel.wav");
             if (level > 5) {
                 gameState = "win";
-                Sound.sfx("Audio/win.wav");
+                Sound.sfx("Pixel Purge/Audio/win.wav");
                 saveHighScore();
                 timer.stop();
             } else {
@@ -146,7 +146,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
  
         if (lives <= 0) {
             gameState = "gameover";
-            Sound.sfx("Audio/loss.wav");
+            Sound.sfx("Pixel Purge/Audio/loss.wav");
             saveHighScore();
             timer.stop();
         }
@@ -164,7 +164,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                         e.alive = false;
                         b.alive = false;
                         score += 100 * level;
-                        Sound.sfx("Audio/shot.wav");
+                        Sound.sfx("Pixel Purge/Audio/shot.wav");
  
                         if (Math.random() < 0.05) {
                             String power = Math.random() < 0.5 ? "Shield" : "Life";
@@ -180,7 +180,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                     lives--;
                     player.x = 380;
                     player.y = 520;
-                    Sound.sfx("Audio/explosion.wav");
+                    Sound.sfx("Pixel Purge/Audio/explosion.wav");
                 }
             }
  
@@ -188,7 +188,7 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                 if (br.intersects(s.getBounds())) {
                     s.health--;
                     b.alive = false;
-                    Sound.sfx("Audio/shieldHit.wav");
+                    Sound.sfx("Pixel Purge/Audio/shieldHit.wav");
                     if (s.health <= 0) s.alive = false;
                 }
             }
@@ -199,10 +199,10 @@ class GamePanel extends JPanel implements ActionListener, KeyListener, MouseList
                 p.alive = false;
                 if (p.type.equals("Life") && lives < 3) {
                     lives++;
-                    Sound.sfx("Audio/heal.wav"); // life powerup sound
+                    Sound.sfx("Pixel Purge/Audio/heal.wav"); // life powerup sound
                 } else if (p.type.equals("Shield")) {
                     buildShields();
-                    Sound.sfx("Audio/coin.wav"); // shield powerup sound
+                    Sound.sfx("Pixel Purge/Audio/coin.wav"); // shield powerup sound
                 }
             }
         }

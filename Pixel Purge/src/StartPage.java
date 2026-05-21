@@ -182,7 +182,7 @@ public class StartPage extends JDialog {
         layered.add(musicPanel, JLayeredPane.PALETTE_LAYER);
 
         add(layered);
-        Sound.playPlaylist(new String[]{"Audio/Jasmine.wav", "Audio/The Color Violet.wav"});
+        Sound.playPlaylist(new String[]{"Pixel Purge/Audio/Jasmine.wav", "Pixel Purge/Audio/The Color Violet.wav"});
     }
  
     private JButton makeRetroButton(String text, Color accent) { // creates the retro style buttons (gui design inspired by arcade games)
